@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>요정을 구하라</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    #intro-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 1000;
+      background-color: black;
+    }
+    #game-container {
+      width: 800px;
+      height: 500px;
+      margin: 20px auto;
+      border: 3px solid #333;
+      background-image: url('images/background.png');
+      background-size: cover;
+      position: relative;
+      overflow: hidden;
+      display: none;
+    }
+    #torin {
+      width: 60px;
+      height: 80px;
+      position: absolute;
+      bottom: 80px;
+      left: 50px;
+      background-image: url('images/torin.png');
+      background-color: rgba(255,0,0,0.5);
+      background-size: cover;
+      z-index: 10;
+    }
+    .dragon {
+      width: 80px;
+      height: 70px;
+      position: absolute;
+      bottom: 80px;
+      right: -80px;
+      background-image: url('images/dragon.png');
+      background-size: cover;
+      z-index: 5;
+    }
+    .balloon-bomb {
+      width: 30px;
+      height: 40px;
+      position: absolute;
+      background-image: url('images/bomb.png');
+      background-size: cover;
+      z-index: 8;
+    }
+    #fairy {
+      width: 40px;
+      height: 50px;
+      position: absolute;
+      bottom: 80px;
+      right: 50px;
+      background-image: url('images/fairy.png');
+      background-size: cover;
+      z-index: 5;
+      display: none;
+    }
+    #floor {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 80px;
+      background-color: #76C043;
+    }
+  </style>
+</head>
+<body>
+  <video id="intro-video" src="video/fairy_dragon_intro_simple.mp4" autoplay muted></video>
+
+  <div id="game-container">
+    <div id="floor"></div>
+    <div id="torin"></div>
+    <div id="fairy"></div>
+  </div>
+
+  <!-- 배경음악 -->
+  <audio id="bgm" src="audio/bgm.m4a" preload="auto" loop></audio>
+
+  <!-- 게임 스크립트 -->
+  <script src="js/game.js"></script>
+
+  <!-- 인트로 영상 종료 후 게임 시작 -->
+  <script>
+    const introVideo = document.getElementById("intro-video");
+    introVideo.addEventListener("ended", () => {
+      introVideo.style.display = "none";
+      document.getElementById("game-container").style.display = "block";
+    });
+  </script>
+
+  <!-- 배경음악 재생 스크립트 -->
+  <script>
+    window.addEventListener("load", () => {
+      const bgm = document.getElementById('bgm');
+      function tryPlayBGM() {
+        const playPromise = bgm.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => console.log("음악 재생됨"))
+            .catch((error) => console.warn("음악 자동 재생 차단됨. 클릭 필요:", error));
+        }
+      }
+      document.addEventListener("click", tryPlayBGM, { once: true });
+      document.addEventListener("keydown", tryPlayBGM, { once: true });
+    });
+  </script>
+</body>
+</html>
